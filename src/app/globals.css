@@ -1,0 +1,72 @@
+:root {
+  --font-ui:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    "Noto Sans CJK JP", "Yu Gothic UI", Meiryo, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", "Roboto Mono", "Noto Sans Mono", "Noto Sans Mono CJK JP", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: #0d1424;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid #2456eb;
+  outline-offset: 2px;
+}
+
+/* The browser shell is a fixed, app-like surface; the bundled demo pages
+   (rendered inside its iframe) keep ordinary document scrolling. */
+html:has([data-fv-shell]),
+body:has([data-fv-shell]) {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #eaeef4;
+}

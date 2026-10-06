@@ -1,0 +1,606 @@
+/*
+ * Styles for everything drawn on the fixed canvas. All lengths are logical
+ * units (CSS px of the embedded page); the canvas as a whole is scaled by the
+ * layout engine, so nothing here may depend on the device.
+ *
+ * Colours are flat on purpose: the background doubles as a recognisable
+ * reference colour for image-recognition macros.
+ */
+
+.root {
+  --on-soft: color-mix(in srgb, var(--on) 78%, var(--bg));
+  --on-dim: color-mix(in srgb, var(--on) 56%, var(--bg));
+  --field: color-mix(in srgb, var(--on) 17%, var(--bg));
+  --edge: color-mix(in srgb, #000 26%, var(--bg));
+  --accent-y: #ffd23f;
+  --ink-y: #0b1220;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--on);
+  font-family: var(--font-ui);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ---- toolbar ---- */
+
+.toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  overflow: hidden;
+}
+
+.pill {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: var(--on);
+  color: var(--inv);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform 0.12s,
+    background 0.15s,
+    color 0.15s;
+}
+
+.pill:active {
+  transform: scale(0.95);
+}
+
+.pillOn {
+  background: var(--accent-y);
+  color: var(--ink-y);
+}
+
+.sessionChip {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 34%;
+  height: 32px;
+  padding: 0 9px 0 4px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--field);
+  color: var(--on);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sessionChip i {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 1.5px var(--on);
+}
+
+.sessionChip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@container (max-width: 345px) {
+  .toolbar {
+    gap: 5px;
+    padding: 0 6px;
+  }
+  .pill {
+    padding: 0 7px;
+    font-size: 12px;
+  }
+}
+
+/* ---- address row ---- */
+
+.urlRow {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0 8px 0 3px;
+}
+
+.iconBtn {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--on);
+}
+
+.iconBtn:disabled {
+  opacity: 0.36;
+  cursor: default;
+}
+
+.iconBtn:active:not(:disabled) {
+  background: var(--field);
+}
+
+.spinning svg {
+  animation: spin 0.8s linear infinite;
+}
+
+.urlField {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 30px;
+  margin-left: 4px;
+  padding: 0 12px 0 10px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--field);
+  color: var(--on);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.urlField svg {
+  flex: none;
+  opacity: 0.85;
+}
+
+.urlField span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38%;
+  background: var(--on);
+  animation: progress 0.9s linear infinite;
+}
+
+.progressOn {
+  opacity: 1;
+  transition: none;
+}
+
+/* ---- mark strips (outside the web display area) ---- */
+
+.strip {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 var(--mark-space);
+  color: var(--on-soft);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.stripText {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Loading state as a flat colour block, so a macro can wait on one pixel:
+   solid ink colour when the page is ready, orange while it loads.
+   The size must match STATUS_SIZE in lib/geometry.ts. */
+.statusBox {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--on);
+  background: var(--on);
+}
+
+.statusBox[data-loading="true"] {
+  background: #ff8a00;
+}
+
+.mark {
+  display: block;
+  width: var(--mark);
+  height: var(--mark);
+  color: var(--mark-color);
+}
+
+.markL,
+.markR {
+  position: absolute;
+  top: 50%;
+  margin-top: calc(var(--mark) / -2);
+}
+
+/* Must match MARK_INSET in lib/geometry.ts. */
+.markL {
+  left: 4px;
+}
+
+.markR {
+  right: 4px;
+}
+
+.mark[data-shape="dot"] {
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mark[data-shape="square"] {
+  background: currentColor;
+}
+
+.mark[data-shape="ring"] {
+  border-radius: 50%;
+  border: calc(var(--mark) * 0.2) solid currentColor;
+}
+
+.mark[data-shape="target"] {
+  border-radius: 50%;
+  border: calc(var(--mark) * 0.17) solid currentColor;
+  background: radial-gradient(circle, currentColor 0 34%, transparent 36%);
+}
+
+.mark[data-shape="cross"] {
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 26% no-repeat,
+    linear-gradient(currentColor, currentColor) center / 26% 100% no-repeat;
+}
+
+/* ---- web display area ---- */
+
+.viewport {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--edge);
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.pending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #6b7688;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid #e3e7ee;
+  border-top-color: #2456eb;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ---- profile screen ---- */
+
+.head {
+  flex: none;
+  padding: 10px 16px 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.hint {
+  margin: 2px 0 0;
+  height: 17px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 17px;
+  color: var(--on-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hintActive {
+  color: var(--accent-y);
+}
+
+.modes {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 6px;
+}
+
+.modeBtn {
+  height: 32px;
+  padding: 0 13px 0 10px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1.5px var(--on);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--on);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+
+.modeOn {
+  background: var(--accent-y);
+  box-shadow: inset 0 0 0 1.5px var(--accent-y);
+  color: var(--ink-y);
+}
+
+.count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--on-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  place-items: center;
+  padding: 0 12px;
+}
+
+.slot {
+  position: relative;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.12s;
+}
+
+.slot:active {
+  transform: scale(0.9);
+}
+
+.slotFilled {
+  background: var(--pc);
+  color: var(--pon);
+  box-shadow: 0 0 0 2px var(--on);
+}
+
+.slotEmpty {
+  border: 1.5px dashed var(--on-dim);
+  color: var(--on-dim);
+  font-weight: 600;
+}
+
+.slotLast {
+  box-shadow:
+    0 0 0 2px var(--on),
+    0 0 0 4.5px var(--bg),
+    0 0 0 7px var(--accent-y);
+}
+
+.slotDim {
+  opacity: 0.45;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-y);
+  color: var(--ink-y);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.foot {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 4px 16px 10px;
+  color: var(--on-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 14px;
+  white-space: nowrap;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.legendFilled {
+  background: var(--on);
+}
+
+.legendEmpty {
+  border: 1.2px dashed var(--on-soft);
+}
+
+.legendLast {
+  background: var(--on);
+  box-shadow:
+    0 0 0 1.5px var(--bg),
+    0 0 0 3px var(--accent-y);
+}
+
+/* ---- dialogs that macros may need to tap: kept on the canvas ---- */
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(8 12 22 / 0.52);
+  /* The canvas can be smaller than the screen; the spread dims the rest too. */
+  box-shadow: 0 0 0 4000px rgb(8 12 22 / 0.52);
+  animation: fade 0.15s;
+}
+
+.dialog {
+  width: 100%;
+  max-width: 304px;
+  padding: 18px 16px 14px;
+  border-radius: 20px;
+  background: #fff;
+  color: #0b1220;
+  font-family: var(--font-ui);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.32);
+  animation: pop 0.2s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+
+.dialogTitle {
+  margin: 0 0 6px;
+  font-size: 15.5px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.dialogBody {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #4a5568;
+}
+
+.dialogActions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dialogBtn {
+  height: 42px;
+  border-radius: 13px;
+  background: #eef1f6;
+  color: #0b1220;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.dialogBtn:active {
+  filter: brightness(0.94);
+}
+
+.dialogPrimary {
+  background: #0b1220;
+  color: #fff;
+}
+
+.dialogDanger {
+  background: #e5484d;
+  color: #fff;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(265%);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}

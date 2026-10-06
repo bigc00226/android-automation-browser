@@ -1,0 +1,233 @@
+.root {
+  position: fixed;
+  inset: 0;
+  font-family: var(--font-ui);
+  color: #0d1424;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: #0d1424;
+  color: #fff;
+}
+
+.splash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #eaeef4;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- real phone ---- */
+
+.phoneHost {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/* ---- desktop stage ---- */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(900px 480px at 50% -8%, #fff 0%, rgb(255 255 255 / 0) 70%),
+    #eaeef4;
+}
+
+.header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px 8px;
+}
+
+.brand {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand strong {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.brand em {
+  padding: 2px 8px;
+  border-radius: 7px;
+  background: #2456eb;
+  color: #fff;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.brand span {
+  font-size: 12px;
+  color: #5b667a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.columns {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 372px;
+}
+
+.columnsWide {
+  grid-template-columns: 318px minmax(0, 1fr) 388px;
+}
+
+.columnsDrawer {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.side {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 18px 24px;
+  scrollbar-width: thin;
+}
+
+.deviceArea {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 0 10px;
+}
+
+/* Dotted "workbench" backdrop, faded out towards the edges. */
+.deviceArea::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgb(13 20 36 / 0.1) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at center, #000 45%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 45%, transparent 85%);
+}
+
+.caption {
+  flex: none;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a5568;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.caption span {
+  margin-left: 4px;
+  font-weight: 500;
+  color: #8a94a6;
+}
+
+.tabs {
+  --fill: #dde2ea;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tabs > :first-child {
+  flex: 1;
+}
+
+/* ---- narrow desktop / tablet: panels slide in as a drawer ---- */
+
+.drawerBtn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(13 20 36 / 0.08);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: min(400px, 94vw);
+  padding: 16px 16px 24px;
+  background: #eaeef4;
+  box-shadow: -18px 0 48px rgb(13 20 36 / 0.2);
+  transform: translateX(105%);
+  visibility: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.85, 0.25, 1),
+    visibility 0s 0.3s;
+}
+
+.drawerOpen {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.drawerScrim {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgb(8 12 22 / 0.36);
+}
+
+.drawerClose {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+
+@media (max-width: 720px) {
+  .brand span {
+    display: none;
+  }
+}
